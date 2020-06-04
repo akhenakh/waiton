@@ -10,4 +10,4 @@ FROM gcr.io/distroless/static
 
 WORKDIR /root/
 COPY --from=builder  /build/waiton .
-ENTRYPOINT ["./waiton"]
+ENTRYPOINT ["/root/waiton"]
