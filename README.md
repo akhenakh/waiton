@@ -14,7 +14,7 @@ You can use environment variable or CLI flags as follow:
   comma separated list of urls to test, supported schemes are `http://` & `tcp://`
 
 
-## Exanple
+## Example
 
 ```
 GLOBALTIMEOUT=10s URLS=""http://www.google.com,tcp://localhost:22" ./waiton

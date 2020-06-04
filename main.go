@@ -20,10 +20,6 @@ const appName = "waiton"
 
 var (
 	version = "no version from LDFLAGS"
-
-	urlsString    = flag.String("urls", "", "comma separated urls to test, supported schemes are http:// & tcp://")
-	globalTimeout = flag.Duration("globalTimeout", time.Duration(30*time.Second), "timeout to wait for all the hosts to be available before failure. (default 30s)")
-	urlTimeout    = flag.Duration("urlTimeout", time.Duration(5*time.Second), "timeout to wait for one host to be available before retry. (default 5s)")
 )
 
 func httpTest(ctx context.Context, client *http.Client, url string) error {
@@ -46,11 +42,11 @@ func httpTest(ctx context.Context, client *http.Client, url string) error {
 	return nil
 }
 
-func tcpTest(ctx context.Context, url string) error {
+func tcpTest(ctx context.Context, url string, timeout time.Duration) error {
 	var d net.Dialer
 
 	for {
-		lctx, cancel := context.WithTimeout(ctx, *urlTimeout)
+		lctx, cancel := context.WithTimeout(ctx, timeout)
 		_, err := d.DialContext(lctx, "tcp", strings.TrimPrefix(url, "tcp://"))
 		if err == nil {
 			return nil
@@ -71,7 +67,22 @@ func tcpTest(ctx context.Context, url string) error {
 }
 
 func main() {
-	flag.Parse()
+	var fs *flag.FlagSet
+
+	if prefix != "" {
+		fs = flag.NewFlagSetWithEnvPrefix(os.Args[0], prefix, 0)
+	} else {
+		fs = flag.NewFlagSet(os.Args[0], 0)
+	}
+
+	var (
+		urlsString    = fs.String("urls", "", "comma separated urls to test, supported schemes are http:// & tcp://")
+		globalTimeout = fs.Duration("globalTimeout", time.Duration(30*time.Second), "timeout to wait for all the hosts to be available before failure. (default 30s)")
+		urlTimeout    = fs.Duration("urlTimeout", time.Duration(5*time.Second), "timeout to wait for one host to be available before retry. (default 5s)")
+	)
+
+	fs.Parse(os.Args[1:])
+	log.Println(*urlsString, prefix)
 
 	ctx := context.Background()
 	ctx, cancel := context.WithTimeout(ctx, *globalTimeout)
@@ -109,7 +120,7 @@ func main() {
 			})
 		case "tcp":
 			g.Go(func() error {
-				err := tcpTest(ctx, su)
+				err := tcpTest(ctx, su, *urlTimeout)
 				if err != nil {
 					log.Printf("%s error: %v", su, err)
 				} else {
