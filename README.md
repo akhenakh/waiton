@@ -30,6 +30,5 @@ docker run  --rm -it -e URLS="http://www.goole.com" akhenak/waiton:latest
 
 ## Details
 
-For HTTP, waiton is using [go-retryablehttp](https://github.com/hashicorp/go-retryablehttp) as an HTTP client, using the retries & backoff strategies.
+For HTTP & TCP, waiton wll retry every 1s as a backoff strategy.
 
-For TCP, waiton is using a simple 1s sleep between retries.
