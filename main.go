@@ -69,6 +69,7 @@ func tcpTest(ctx context.Context, url string, timeout time.Duration) error {
 func main() {
 	var fs *flag.FlagSet
 
+	prefix := os.Getenv("PREFIX")
 	if prefix != "" {
 		fs = flag.NewFlagSetWithEnvPrefix(os.Args[0], prefix, 0)
 	} else {
@@ -82,7 +83,6 @@ func main() {
 	)
 
 	fs.Parse(os.Args[1:])
-	log.Println(*urlsString, prefix)
 
 	ctx := context.Background()
 	ctx, cancel := context.WithTimeout(ctx, *globalTimeout)
