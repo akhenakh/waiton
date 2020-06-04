@@ -78,8 +78,8 @@ func main() {
 
 	var (
 		urlsString    = fs.String("urls", "", "comma separated urls to test, supported schemes are http:// & tcp://")
-		globalTimeout = fs.Duration("globalTimeout", time.Duration(30*time.Second), "timeout to wait for all the hosts to be available before failure. (default 30s)")
-		urlTimeout    = fs.Duration("urlTimeout", time.Duration(5*time.Second), "timeout to wait for one host to be available before retry. (default 5s)")
+		globalTimeout = fs.Duration("globalTimeout", time.Duration(1*time.Minute), "timeout to wait for all the hosts to be available before failure. (default 1mn)")
+		urlTimeout    = fs.Duration("urlTimeout", time.Duration(10*time.Second), "timeout to wait for one host to be available before retry. (default 10s)")
 	)
 
 	fs.Parse(os.Args[1:])
