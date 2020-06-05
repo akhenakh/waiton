@@ -113,7 +113,7 @@ func main() {
 		urlsString = fs.String(
 			"urls",
 			"",
-			"comma separated urls to test, supported schemes are http:// & tcp://",
+			"comma separated urls to test, supported schemes are http:// https:// & tcp://",
 		)
 
 		globalTimeout = fs.Duration(
@@ -168,7 +168,7 @@ func main() {
 		}
 
 		switch u.Scheme {
-		case "http":
+		case "http", "https":
 			g.Go(func() error {
 				err := httpTest(ctx, httpClient, su, *maxRetries)
 				if err != nil {
