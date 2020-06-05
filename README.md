@@ -11,7 +11,7 @@ You can use environment variable or CLI flags as follow:
   Timeout to wait for one host to be available before retry, default `10s`.
 
 - `URLS` `-urls`
-  comma separated list of urls to test, supported schemes are `http://` & `tcp://`
+  comma separated list of urls to test, supported schemes are `http://`, `https://` & `tcp://`
 
 
 ## Example
