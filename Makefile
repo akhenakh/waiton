@@ -1,10 +1,4 @@
-ifndef VERSION
-VERSION := $(shell git describe --always --tags)
-endif
-
-DATE := $(shell date -u +%Y%m%d.%H%M%S)
-
-LDFLAGS_STATIC = -trimpath -ldflags "-linkmode external -extldflags -static -X=main.version=$(VERSION)-$(DATE)"
+LDFLAGS_STATIC = -trimpath -ldflags "-linkmode external -extldflags -static"
 
 targets = waiton
 
@@ -15,13 +9,13 @@ all: test $(targets)
 test: testnolint
 
 testnolint:
-	CGO_ENABLED=0 go test 
+	go test -race
 
 lint:
 	golangci-lint run
 
 waiton:
-	CGO_ENABLED=0 go build -trimpath -ldflags "-X=main.version=$(VERSION)-$(DATE)"
+	CGO_ENABLED=0 go build -trimpath
 
 waiton-static: test 
 	go build -a -v ${LDFLAGS_STATIC}
