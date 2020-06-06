@@ -22,12 +22,14 @@ const (
 )
 
 func httpTest(ctx context.Context, client *http.Client, url string, maxRetries int) error {
-	retries := 0
+	retries := -1
 
 	for {
 		if retries >= maxRetries {
 			return errors.New("reached max number of retries")
 		}
+
+		log.Printf("%s trying request\n", url)
 
 		req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 		if err != nil {
@@ -50,6 +52,8 @@ func httpTest(ctx context.Context, client *http.Client, url string, maxRetries i
 			err = errors.New("no response")
 		}
 
+		log.Printf("%s Request failed err: %v", url, err)
+
 		retries++
 
 		select {
@@ -68,12 +72,15 @@ func httpTest(ctx context.Context, client *http.Client, url string, maxRetries i
 func tcpTest(ctx context.Context, url string, timeout time.Duration, maxRetries int) error {
 	var d net.Dialer
 
-	retries := 0
+	retries := -1
 
 	for {
+		// 1st try will be 0
 		if retries >= maxRetries {
 			return errors.New("reached max number of retries")
 		}
+
+		log.Printf("%s trying connection\n", url)
 
 		lctx, cancel := context.WithTimeout(ctx, timeout)
 
@@ -82,6 +89,8 @@ func tcpTest(ctx context.Context, url string, timeout time.Duration, maxRetries 
 			cancel()
 			return nil
 		}
+
+		log.Printf("%s Request failed err: %v", url, err)
 
 		cancel()
 		retries++
