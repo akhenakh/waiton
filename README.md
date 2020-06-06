@@ -32,3 +32,4 @@ docker run  --rm -it -e URLS="http://www.goole.com" akhenak/waiton:latest
 
 For HTTP & TCP, waiton wll retry every 1s as a backoff strategy.
 
+waiton is the main component for [drone-waiton](https://github.com/akhenakh/drone-waiton) a drone plugin to wait for hosts availability.
