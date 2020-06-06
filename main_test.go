@@ -12,8 +12,6 @@ import (
 )
 
 func Test_HTTPTest_Working(t *testing.T) {
-	t.Parallel()
-
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
 
@@ -30,8 +28,6 @@ func Test_HTTPTest_Working(t *testing.T) {
 }
 
 func Test_HTTPTest_No200(t *testing.T) {
-	t.Parallel()
-
 	ctx, cancel := context.WithTimeout(context.Background(), 4*time.Second)
 	defer cancel()
 
@@ -50,8 +46,6 @@ func Test_HTTPTest_No200(t *testing.T) {
 }
 
 func Test_HTTPTest_MustRetry_ToSucceed(t *testing.T) {
-	t.Parallel()
-
 	var count uint
 
 	ctx, cancel := context.WithTimeout(context.Background(), 4*time.Second)
