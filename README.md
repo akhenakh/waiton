@@ -17,11 +17,11 @@ You can use environment variable or CLI flags as follow:
 ## Example
 
 ```
-GLOBALTIMEOUT=10s URLS=""http://www.google.com,tcp://localhost:22" ./waiton
+GLOBALTIMEOUT=10s URLS="http://www.google.com,tcp://localhost:22" ./waiton
 ```
 
 ```
-./waiton -globalTimeout=10s -urls="URLS=http://www.google.com,tcp://localhost:22"
+./waiton -globalTimeout=10s -urls="http://www.google.com,tcp://localhost:22"
 ```
 
 ```
